@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Programmer {
+public class Programmer implements  IEmployee {
 
     private String lastName;
     private String firstName;
@@ -54,9 +54,13 @@ public class Programmer {
     }
 
 
+
+
     @Override
     public String toString() {
         return String.format("%s, %s : %s , yox : %s",lastName,firstName,moneyFormat.format(getSalary()),yearsOfExp);
 
     }
+
+
 }

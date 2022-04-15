@@ -4,7 +4,7 @@ import java.text.NumberFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Employee implements  IEmployee {
+public class Employee {
 
     public static void main(String[] args) {
         String people = """
@@ -24,6 +24,7 @@ public class Employee implements  IEmployee {
             Flinstone4, Wilma4, 3/3/1910, Analyst, {projectCount=6}
             Flinstone5, Wilma5, 3/3/1910, Analyst, {projectCount=9}
             Rubble, Betty, 4/4/1915, CEO, {avgStockPrice=300}
+            Rubble, Betty, 4/4/1915, CEOw, {avgStockPrice=300}
             """;
 
         String regex = "(?<lastName>\\w+),\\s*(?<firstName>\\w+),\\s*(?<dob>\\d{1,2}/\\d{1,2}/\\d{4}),\\s*(?<role>\\w+)(?:,\\s*\\{(?<details>.*)\\})?\\n";
@@ -31,93 +32,28 @@ public class Employee implements  IEmployee {
         Matcher mat = pat.matcher(people);
 
 
-//        String progRegex = "\\w+=(?<locpd>\\w+),\\w+=(?<yoe>\\w+),\\w+=(?<iq>\\w+)";
-//        Pattern codePattern = Pattern.compile(progRegex);
-//
-//
-//        String managerRegex = "\\w+=(?<orgSize>\\w+),\\w+=(?<dr>\\w+)";
-//        Pattern managerPatter = Pattern.compile(managerRegex);
-//
-//        String analystRegex = "\\w+=(?<projects>\\w+)";
-//        Pattern analystPatter = Pattern.compile(analystRegex);
-//
-//
-//
-//        String ceoRegex = "\\w+=(?<stockPrice>\\w+)";
-//        Pattern ceoPatter = Pattern.compile(ceoRegex);
+
 
         int totalSalaries = 0;
-
+        IEmployee employee = null;
         while (mat.find()) {
-            totalSalaries += switch (mat.group("role")){
-                case "Programmer" -> {
-                    Programmer programmer = new Programmer(mat.group());
-                    System.out.println(programmer.toString());
-                    yield programmer.getSalary();
+           employee = switch (mat.group("role")){
+                case "Programmer" -> new Programmer(mat.group());
+                case "Manager" -> new Manager(mat.group());
+                case "Analyst" ->  new Analyst(mat.group());
+                case "CEO" ->  new CEO(mat.group());
+                default -> new Nobody();
+             };
 
-                }
-                case "Manager" -> {
-                    Manager manager = new Manager(mat.group());
-//                    int salary = 0 ;
-//                    Matcher managerMatcher = managerPatter.matcher(mat.group("details"));
-//
-//                    if (managerMatcher.find()){
-//
-//                        int orgSize = Integer.parseInt(managerMatcher.group("orgSize"));
-//                        int dr = Integer.parseInt(managerMatcher.group("dr"));
-//
-//                      //  System.out.printf("orgSize is is : %s , dr is : %s%n", orgSize, dr);
-//                        salary = 3500 + orgSize * dr;
-//                    }
-//                    else {
-//                        salary = 3500;
-//                    }
-//                    System.out.printf("%s %s %s%n" , mat.group("lastName"), mat.group("firstName"),NumberFormat.getCurrencyInstance().format(salary));
-                    System.out.println(manager.toString());
-                    yield manager.getSalary();
-                }
-                case "Analyst" -> {
-                    Analyst analyst  = new Analyst(mat.group());
-//                    int salary =0 ;
-//                    Matcher analystMatcher = analystPatter.matcher(mat.group("details"));
-//
-//                    if (analystMatcher.find()){
-//
-//                        int projects =  Integer.parseInt(analystMatcher.group("projects"));
-//                     //   System.out.printf("project count is  : %s%n", projects);
-//                        salary = 2500 + projects * 2;
-//                    }  else {
-//                        salary = 2500;
-//                    }
-//                   System.out.printf("%s %s %s%n" , mat.group("lastName"), mat.group("firstName"),NumberFormat.getCurrencyInstance().format(salary));
-                    System.out.println(analyst.toString());
-
-                    yield analyst.getSalary();
-                }
-
-                case "CEO" -> {
-                    CEO ceo = new CEO(mat.group());
-//                    int salary = 0;
-//                    Matcher ceoMatcher = ceoPatter.matcher(mat.group("details")) ;
-//
-//                    if (ceoMatcher.find()){
-//                         int stockPrice = Integer.parseInt(ceoMatcher.group("stockPrice")) ;
-//                         System.out.printf("stock price is  : %s%n",stockPrice );
-//                         salary = 5000 * stockPrice;
-//                    }    else{
-//                        salary = 5000;
-//                    }
-//                   System.out.printf("%s %s %s%n" , mat.group("lastName"), mat.group("firstName"),NumberFormat.getCurrencyInstance().format(salary));
-                    System.out.println(ceo.toString());
-
-                    yield ceo.getSalary();
-                }
-                default -> 0;
+            System.out.println(employee.toString());
+            totalSalaries += employee.getSalary();
             };
-        }
+
         NumberFormat currencyInstance= NumberFormat.getCurrencyInstance();
         System.out.printf("the total payout is %s %n",currencyInstance.format(totalSalaries));
+        }
+
 
 
     }
-}
+

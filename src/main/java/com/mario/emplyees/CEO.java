@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CEO {
+public class CEO  implements  IEmployee{
     private String lastName;
     private String firstName;
     private LocalDate dob;
@@ -45,11 +45,11 @@ public class CEO {
 
     }
 
-    public int getSalary(){
-        // salary = 3000 +locpd * yoe *iq;
+    @Override
+    public int getSalary() {
         return 5000 * avgStockPrice;
-    }
 
+    }
 
     @Override
     public String toString() {

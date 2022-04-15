@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Manager {
+public class Manager implements  IEmployee{
 
 
     private String lastName;
